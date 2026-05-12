@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   TAILWIND V4 — THEME TOKENS
+   All custom design tokens live here via @theme
+───────────────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-rock-navy: #0a1628;
+  --color-rock-blue: #1a3a6e;
+  --color-rock-steel: #2a5298;
+  --color-rock-sky: #4a90d9;
+  --color-rock-gold: #c8a96e;
+  --color-rock-cream: #f5f0e8;
+  --color-rock-white: #fafaf8;
+  --color-rock-gray: #8a8a8a;
+  --color-rock-darkgray: #1e1e1e;
+  --color-rock-about-bg: #0d1a2e;
+  --color-rock-contact-bg: #070f1d;
+  --color-rock-footer-bg: #04090f;
+
+  /* Fonts */
+  --font-display: var(--font-bebas), sans-serif;
+  --font-serif: var(--font-cormorant), serif;
+  --font-body: var(--font-dm-sans), sans-serif;
+
+  /* Animations */
+  --animate-fade-up-1: fade-up 0.8s 0.3s forwards;
+  --animate-fade-up-2: fade-up 0.8s 0.5s forwards;
+  --animate-fade-up-3: fade-up 0.8s 0.7s forwards;
+  --animate-fade-up-4: fade-up 0.8s 0.9s forwards;
+  --animate-fade-up-5: fade-up 0.8s 1.1s forwards;
+  --animate-fade-up-6: fade-up 0.8s 1.3s forwards;
+  --animate-rotate-slow: rotate-slow 30s linear infinite;
+  --animate-scroll-line: scroll-line 2s ease-in-out infinite;
+  --animate-marquee: marquee 25s linear infinite;
+
+  /* Keyframes defined globally below */
+}
+
+/* ─────────────────────────────────────────────
+   GLOBAL ANIMATIONS & KEYFRAMES
+───────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rotate-slow {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(360deg); }
+}
+
+@keyframes scroll-line {
+  0%, 100% { transform: scaleY(1); opacity: 1; }
+  50%       { transform: scaleY(0.5); opacity: 0.4; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-rock-navy);
+  color: var(--color-rock-white);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─────────────────────────────────────────────
+   SCROLLBAR
+───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-rock-navy);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-rock-gold);
+}
+
+/* ─────────────────────────────────────────────
+   REVEAL ON SCROLL
+───────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+
+/* ─────────────────────────────────────────────
+   CUSTOM SELECT ARROW
+───────────────────────────────────────────── */
+select.form-select {
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a96e' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  background-color: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+}
+select.form-select option {
+  background: var(--color-rock-navy);
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE — matches HTML @media (max-width: 1024px)
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Nav: padding: 20px 30px */
+  #nav {
+    padding: 20px 30px !important;
+  }
+
+  /* Sections: padding: 80px 30px */
+  .section-responsive {
+    padding: 80px 30px !important;
+  }
+
+  /* Hero Content */
+  .hero-content-responsive {
+    padding: 0 30px !important;
+  }
+
+  /* Two-col grids become single col */
+  .grid-responsive-2 {
+    grid-template-columns: 1fr !important;
+    gap: 48px !important;
+  }
+
+  /* Products header */
+  .products-header-responsive {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Products grid: 2 cols */
+  .products-grid-responsive {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Features: 2 cols */
+  .features-grid-responsive {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Process: 2 cols with gap */
+  .process-grid-responsive {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 40px !important;
+  }
+
+  /* Why grid: 1 col */
+  .why-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Contact grid: 1 col */
+  .contact-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Footer: col, gap 32px, text-center */
+  .footer-responsive {
+    flex-direction: column !important;
+    gap: 32px !important;
+    text-align: center !important;
+    padding: 40px 30px !important;
+  }
+  .footer-links-responsive {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+}
