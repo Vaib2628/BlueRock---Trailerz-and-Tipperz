@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { WHY_CARDS, WHY_NUMBERS, WHY_QUOTE, WHY_QUOTE_ATTR } from '@/lib/constants';
 
 export default function WhyUs() {
@@ -79,7 +80,7 @@ export default function WhyUs() {
         </div>
 
         {/* why-visual: position sticky; top: 120px */}
-        <div className="reveal reveal-delay-2" style={{ position: 'sticky', top: '120px' }}>
+        <div className="reveal reveal-delay-2 why-visual-sticky">
           {/* why-quote: border-left: 2px solid gold; padding: 32px 36px; margin-bottom: 32px */}
           <blockquote
             style={{
@@ -103,7 +104,21 @@ export default function WhyUs() {
           </blockquote>
 
           {/* why-number-block: grid 2col; gap: 2px */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px' }} role="list" aria-label="Key metrics">
+          {/* Fleet image above the metrics */}
+          <div className="relative overflow-hidden" style={{ height: '200px', marginBottom: '2px' }}>
+            <Image
+              src="/products/tipper-convoy.jpg"
+              alt="BlueRock Tippers fleet convoy — three heavy duty tipper trucks"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 768px) 100vw, 40vw"
+            />
+            <div
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(0deg, rgba(10,22,40,0.6) 0%, transparent 60%)' }}
+            />
+          </div>
+          <div className="why-number-grid" role="list" aria-label="Key metrics">
             {WHY_NUMBERS.map((item) => (
               <div
                 key={item.label}

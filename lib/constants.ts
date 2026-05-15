@@ -53,7 +53,7 @@ export const ABOUT_BODY_1 =
   'Since 1984, BlueRock has been at the forefront of commercial vehicle body fabrication in India. What began as a regional workshop has grown into a nationally recognised name, synonymous with precision and durability.';
 
 export const ABOUT_BODY_2 =
-  'Operating from a state-of-the-art facility in Chakan Industrial Area, Pune, our modernised plant combines four decades of craft knowledge with the latest fabrication technology — Auto-CAD, Solid Edge design, high-capacity press brakes, MIG welding, and shot-blasting paint booths.';
+  'Operating from a state-of-the-art facility in Navsari, Gujarat, our modernised plant combines four decades of craft knowledge with the latest fabrication technology — Auto-CAD, Solid Edge design, high-capacity press brakes, MIG welding, and shot-blasting paint booths.';
 
 export const VEHICLE_CATEGORIES: VehicleCategory[] = [
   { abbr: 'LCV', label: 'Light' },
@@ -218,10 +218,10 @@ export const WHY_NUMBERS: WhyNumberItem[] = [
 export const CONTACT_DETAILS: ContactDetail[] = [
   {
     label: 'Address',
-    value: 'Survey No: 4/5, Vitthalnagar, Dehugaon\nPune – 412109, Maharashtra, India',
+    value: 'Block no. 460/1, Alipore,\nTal. Chikhali, Dist. Navsari - 396409\nGujarat',
     iconType: 'location',
   },
-  { label: 'Phone', value: '+91 93726 49121', iconType: 'phone' },
+  { label: 'Phone', value: '+91 77963 71155', iconType: 'phone' },
   { label: 'Email', value: 'info@bluerocktippers.com', iconType: 'email' },
   { label: 'Response Time', value: 'Within 24 hours guaranteed', iconType: 'clock' },
 ];

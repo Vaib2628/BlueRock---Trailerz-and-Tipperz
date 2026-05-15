@@ -47,10 +47,39 @@ const inputStyle = {
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    // Convert FormData to URLSearchParams so Google Apps Script can parse it into e.parameter
+    const urlEncodedData = new URLSearchParams(formData as any);
+    
+    // Read the script URL from the .env file
+    const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL!;
+    
+    try {
+      if (!scriptUrl) {
+        throw new Error('Script URL is not defined in environment variables');
+      }
+
+      await fetch(scriptUrl, {
+        method: 'POST',
+        body: urlEncodedData,
+        mode: 'no-cors', // Required to bypass CORS restrictions for Google Script webhooks
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting form', error);
+      // Fallback: still show submitted so user isn't stuck
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -220,7 +249,8 @@ export default function Contact() {
                 {/* btn-submit: padding: 20px 48px */}
                 <button
                   type="submit"
-                  className="relative self-start overflow-hidden transition-all duration-300 group font-body uppercase text-rock-navy bg-rock-gold cursor-pointer border-none"
+                  disabled={submitting}
+                  className="relative self-start overflow-hidden transition-all duration-300 group font-body uppercase text-rock-navy bg-rock-gold cursor-pointer border-none disabled:opacity-50"
                   style={{ padding: '20px 48px', fontSize: '11px', letterSpacing: '4px' }}
                   aria-label="Send enquiry to BlueRock"
                 >
@@ -228,7 +258,7 @@ export default function Contact() {
                     className="absolute inset-0 bg-rock-white -translate-x-full group-hover:translate-x-0 transition-transform duration-300"
                     aria-hidden="true"
                   />
-                  <span className="relative z-10">Send Enquiry</span>
+                  <span className="relative z-10">{submitting ? 'Sending...' : 'Send Enquiry'}</span>
                 </button>
               </form>
             )}

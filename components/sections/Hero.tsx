@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { HERO_DESC, HERO_EYEBROW, HERO_STATS } from '@/lib/constants';
 import { BtnGhost, BtnPrimary } from '@/components/ui/primitives';
 
@@ -9,17 +10,34 @@ export default function Hero() {
       style={{ height: '100vh', minHeight: '700px' }}
       aria-label="Hero — Built for the road ahead"
     >
-      {/* Background */}
+      <style>{`
+        .hero-image-wrapper {
+          position: absolute;
+          height: 100%;
+          width: 70%;
+          top: 3rem;
+          right: -3rem;
+          bottom: 0;
+        }
+        @media (max-width: 1023px) {
+          .hero-image-wrapper {
+            width: 100%;
+            top: 0;
+            right: 0;
+          }
+        }
+      `}</style>
+      {/* ── Dark base ─────────────────────────────────────────────────── */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 80% 60% at 70% 50%, rgba(26,58,110,0.5) 0%, transparent 70%), linear-gradient(135deg, #0a1628 0%, #0d1f3d 40%, #111827 100%)',
+            'linear-gradient(135deg, #0a1628 0%, #0d1f3d 40%, #111827 100%)',
         }}
         aria-hidden="true"
       />
 
-      {/* Grid lines */}
+      {/* ── Subtle gold grid ──────────────────────────────────────────── */}
       <div
         className="absolute inset-0"
         style={{
@@ -30,47 +48,128 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* Rotating circle */}
+      {/* ── Rotating ring ─────────────────────────────────────────────── */}
       <div
-        className="absolute rounded-full border border-[rgba(200,169,110,0.12)]"
+        className="absolute rounded-full border border-[rgba(200,169,110,0.10)] hidden lg:block"
         style={{
-          right: '-100px',
+          right: '-60px',
           top: '50%',
-          width: '700px',
-          height: '700px',
+          transform: 'translateY(-50%)',
+          width: '640px',
+          height: '640px',
           animation: 'rotate-slow 30s linear infinite',
         }}
         aria-hidden="true"
       >
         <span
-          className="absolute rounded-full border border-[rgba(74,144,217,0.12)]"
+          className="absolute rounded-full border border-[rgba(74,144,217,0.10)]"
           style={{ inset: '40px' }}
         />
         <span
-          className="absolute rounded-full border border-[rgba(200,169,110,0.08)]"
+          className="absolute rounded-full border border-[rgba(200,169,110,0.07)]"
           style={{ inset: '100px' }}
         />
       </div>
 
-      {/* Accent line */}
+
+      {/* ══════════════════════════════════════════════════════════════════
+          BACKGROUND IMAGE — full viewport, CSS gradient creates the curve.
+          No SVG paths needed. A radial-gradient ellipse centered left
+          naturally curves outward in the middle, giving a smooth organic
+          boundary between the dark bg and the truck photo.
+      ══════════════════════════════════════════════════════════════════ */}
+      <div className="absolute inset-0" aria-hidden="true">
+        <div className="hero-image-wrapper">
+          <Image
+            // src="/products/bharatbenz-tipper.jpg"
+            src="/campaign_images/brand_atmosphere_dusk_1778775998774.png"
+            alt="BlueRock Tippers flagship tipper body"
+            fill
+            priority
+            className="object-cover"
+            style={{ objectPosition: '50% 50%', color: 'transparent' }}
+            sizes="50vw"
+          />
+        </div>
+
+        {/* ── Mobile overlay: heavy veil so text is always readable ──── */}
+        <div
+          className="absolute inset-0 lg:hidden"
+          style={{ background: 'rgba(10,22,40,0.90)' }}
+        />
+
+        {/*
+          ── Desktop overlay: CSS radial-gradient curved reveal ─────────
+
+          radial-gradient(ellipse Rx Ry at Cx Cy, stops…)
+            Rx = 72%   → horizontal radius (controls how far right the curve bulges)
+            Ry = 130%  → vertical radius larger than 100% so the ellipse
+                          extends well beyond top/bottom edges — making the
+                          curve almost straight at extremes, bulging in centre
+            Cx = 22%   → ellipse centre 22% from left edge
+            Cy = 50%   → vertically centred
+
+          Colour stops:
+            0–44%  of radius → solid #0a1628 (left dark zone)
+            44–68% of radius → smooth fade to near-transparent (curve zone)
+            68–100%          → very light wash, then transparent
+
+          At the vertical centre (y=50%) the dark boundary falls at:
+            22% + 44% of 72% = 22% + 31.7% ≈ 53.7% from left
+          At the top/bottom edges (y=0,100) the ellipse is much narrower
+          horizontally, so the boundary pulls back left — this is what
+          creates the natural inward curve at top and bottom.
+        */}
+        <div
+  className="absolute inset-0 hidden lg:block"
+  style={{
+    background: `
+      radial-gradient(
+        ellipse 72% 130% at 22% 50%,
+        #0a1628 0%,
+        #0a1628 42%,
+        rgba(10,22,40,0.92) 52%,
+        rgba(10,22,40,0.72) 60%,
+        rgba(10,22,40,0.42) 68%,
+        rgba(10,22,40,0.18) 76%,
+        rgba(10,22,40,0.06) 84%,
+        transparent 92%
+      )
+    `,
+  }}
+/>
+
+        {/* Top & bottom edge fades — both breakpoints */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, rgba(10,22,40,0.55) 0%, transparent 18%)' }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(0deg, rgba(10,22,40,0.75) 0%, transparent 30%)' }}
+        />
+      </div>
+
+
+      {/* ── Accent line ───────────────────────────────────────────────── */}
       <div
-        className="absolute"
+        className="absolute hidden lg:block"
         style={{
           left: 0,
           bottom: '120px',
-          width: '40%',
+          width: '36%',
           height: '1px',
           background: 'linear-gradient(90deg, transparent, rgba(200,169,110,0.5), transparent)',
         }}
         aria-hidden="true"
       />
 
-      {/* Content — padding: 0 60px, max-width: 900px */}
+      {/* ── Content ───────────────────────────────────────────────────── */}
       <div
-        className="relative hero-content-responsive"
-        style={{ padding: '0 60px', maxWidth: '900px' }}
+        className="relative z-10 hero-content-responsive w-full"
+        style={{ padding: '0 clamp(24px, 5vw, 60px)', maxWidth: '860px' }}
       >
-        {/* Eyebrow — margin-bottom: 32px */}
+        {/* Eyebrow */}
         <div
           className="flex items-center opacity-0 animate-fade-up-1"
           style={{ gap: '20px', marginBottom: '32px' }}
@@ -88,11 +187,11 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* H1 — line-height: 0.9, letter-spacing: 2px, margin-bottom: 8px */}
+        {/* H1 */}
         <h1
           className="font-display text-rock-white opacity-0 animate-fade-up-2"
           style={{
-            fontSize: 'clamp(72px, 9vw, 130px)',
+            fontSize: 'clamp(52px, 9vw, 130px)',
             lineHeight: '0.9',
             letterSpacing: '2px',
             marginBottom: '8px',
@@ -103,13 +202,13 @@ export default function Hero() {
           <span className="text-rock-sky block">THE ROAD</span>
           <span
             className="font-serif italic font-light text-rock-gold block"
-            style={{ fontSize: 'clamp(50px, 6vw, 90px)', letterSpacing: '0' }}
+            style={{ fontSize: 'clamp(38px, 6vw, 90px)', letterSpacing: '0' }}
           >
             ahead.
           </span>
         </h1>
 
-        {/* Description — margin: 32px 0 48px */}
+        {/* Description */}
         <p
           className="font-body text-white/55 opacity-0 animate-fade-up-3"
           style={{
@@ -122,9 +221,9 @@ export default function Hero() {
           {HERO_DESC}
         </p>
 
-        {/* Actions — gap: 24px */}
+        {/* Actions */}
         <div
-          className="flex items-center opacity-0 animate-fade-up-4"
+          className="flex flex-wrap items-center opacity-0 animate-fade-up-4"
           style={{ gap: '24px' }}
         >
           <BtnPrimary href="#products">Explore Products</BtnPrimary>
@@ -132,7 +231,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Stats — bottom: 60px, right: 60px, gap: 48px */}
+      {/* ── Stats — desktop only ──────────────────────────────────────── */}
       <div
         className="absolute opacity-0 animate-fade-up-5 hidden lg:flex"
         style={{ bottom: '60px', right: '60px', gap: '48px' }}
@@ -159,10 +258,10 @@ export default function Hero() {
         ))}
       </div>
 
-      {/* Scroll indicator — bottom: 40px, left: 60px, gap: 12px */}
+      {/* ── Scroll indicator ─────────────────────────────────────────── */}
       <div
         className="absolute flex flex-col items-center opacity-0 animate-fade-up-6"
-        style={{ bottom: '40px', left: '60px', gap: '12px' }}
+        style={{ bottom: '40px', left: 'clamp(24px, 5vw, 60px)', gap: '12px' }}
         aria-hidden="true"
       >
         <div
