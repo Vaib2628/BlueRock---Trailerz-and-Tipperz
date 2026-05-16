@@ -259,8 +259,8 @@ export default function Products() {
 
           const cardImages: Record<string, string> = {
             '02': '/products/cargo-box-body.jpg',
-            '03': '/products/tipper-profile-white.jpg',
-            '04': '/products/tip-trailer-road.jpg',
+            '03': '/products/container-insulated.jpeg',
+            '04': '/products/tip-trailer-flat-bed.jpeg',
             '05': '/products/hook-loader.jpg',
             '06': '/products/flatbed-trailer-night.jpg',
             '07': '/products/mahindra-tipper.jpg',
