@@ -261,10 +261,10 @@ export default function Products() {
             '02': '/products/cargo-box-body.jpg',
             '03': '/products/container-insulated.jpeg',
             '04': '/products/tip-trailer-flat-bed.jpeg',
-            '05': '/products/hook-loader.jpg',
-            '06': '/products/flatbed-trailer-night.jpg',
-            '07': '/products/mahindra-tipper.jpg',
-            '08': '/products/tipper-convoy.jpg',
+            '05': '/products/hook-loader.jpeg',
+            '06': '/products/tankers.jpeg',
+            '07': '/products/garbage-tippers.jpeg',
+            '08': '/products/custom-special-purpose.jpeg',
           };
           const imgSrc = cardImages[card.num];
 
