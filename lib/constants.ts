@@ -26,7 +26,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: 'Contact', href: '#contact' },
 ];
 
-export const HERO_EYEBROW = 'Pune · Maharashtra · Est. 1984';
+export const HERO_EYEBROW = 'Navsari · Gujarat · Est. 1984';
 
 export const HERO_DESC =
   "India's premier commercial vehicle body fabricator. Precision-engineered tippers, trailers, and specialised transport solutions for operators who demand the exceptional.";
