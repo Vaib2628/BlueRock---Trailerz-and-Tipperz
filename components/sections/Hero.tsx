@@ -83,7 +83,8 @@ export default function Hero() {
           <Image
             // src="/products/bharatbenz-tipper.jpg"
             src="/campaign_images/brand_atmosphere_dusk_1778775998774.png"
-            alt="BlueRock Tippers flagship tipper body"
+            alt="BlueRock Tippers - Premium Tipper Body Manufacturer, BlueRock"
+            title="BlueRock Tippers"
             fill
             priority
             className="object-cover"

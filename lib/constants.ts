@@ -14,9 +14,9 @@ import type {
 } from '@/types';
 
 export const SITE_URL = 'https://www.bluerocktippers.com';
-export const SITE_NAME = 'BlueRock Tippers & Trailerz';
+export const SITE_NAME = 'BlueRock Tippers';
 export const SITE_DESCRIPTION =
-  "India's premier commercial vehicle body fabricator. Precision-engineered tippers, trailers, and specialised transport solutions for operators who demand the exceptional.";
+  "BlueRock Tippers (also known as BlueRock) is India's premier commercial vehicle body fabricator. We manufacture precision-engineered BlueRock tippers, trailers, and specialised transport solutions for operators who demand the exceptional.";
 
 export const NAV_LINKS: NavLink[] = [
   { label: 'About', href: '#about' },

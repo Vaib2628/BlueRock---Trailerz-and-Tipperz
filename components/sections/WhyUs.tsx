@@ -108,7 +108,8 @@ export default function WhyUs() {
           <div className="relative overflow-hidden" style={{ height: '200px', marginBottom: '2px' }}>
             <Image
               src="/products/tipper-convoy.jpg"
-              alt="BlueRock Tippers fleet convoy — three heavy duty tipper trucks"
+              alt="BlueRock Tippers fleet convoy — three heavy duty tipper trucks by BlueRock"
+              title="BlueRock Tippers"
               fill
               className="object-cover object-center"
               sizes="(max-width: 768px) 100vw, 40vw"

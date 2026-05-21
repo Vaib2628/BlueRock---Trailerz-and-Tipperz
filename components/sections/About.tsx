@@ -222,7 +222,8 @@ export default function About() {
             <div className="about-main-inner">
               <Image
                 src="/products/workshop-interior.jpg"
-                alt="BlueRock Tippers manufacturing facility Chakan Pune"
+                alt="BlueRock Tippers - BlueRock Manufacturing Facility Pune"
+                title="BlueRock Tippers"
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 50vw"
