@@ -194,8 +194,8 @@ export default function Products() {
         >
           <Image
             src="/products/tipper-raised-dump.jpg"
-            alt="BlueRock Tippers - Heavy Duty Tipper Body by BlueRock"
-            title="BlueRock Tippers"
+            alt="BlueRock commercial tipper bodies — Heavy duty tipper trailer manufacturer Navsari Gujarat"
+            title="BlueRock Tippers - Commercial Tipper Bodies"
             fill
             className="object-cover object-center opacity-30"
             sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 66vw"
@@ -282,8 +282,8 @@ export default function Products() {
               {imgSrc && (
                 <Image
                   src={imgSrc}
-                  alt={`BlueRock Tippers - ${card.name} by BlueRock`}
-                  title={`BlueRock Tippers - ${card.name}`}
+                  alt={`BlueRock ${card.name} — Commercial tipper trailer fabrication India`}
+                  title={`BlueRock ${card.name} - Commercial Vehicle Body`}
                   fill
                   className="product-card-img object-cover object-center opacity-0 group-hover:opacity-20 transition-opacity duration-500"
                   sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"

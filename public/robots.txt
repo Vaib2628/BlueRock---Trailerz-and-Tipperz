@@ -1,0 +1,17 @@
+# Allow all crawlers for better indexing
+User-agent: *
+Allow: /
+
+# Specific directives for Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Block bad bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: DotBot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://www.bluerocktippers.com/sitemap.xml

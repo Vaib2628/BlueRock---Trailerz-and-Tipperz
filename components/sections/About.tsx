@@ -222,8 +222,8 @@ export default function About() {
             <div className="about-main-inner">
               <Image
                 src="/products/workshop-interior.jpg"
-                alt="BlueRock Tippers - BlueRock Manufacturing Facility Pune"
-                title="BlueRock Tippers"
+                alt="BlueRock Tippers manufacturing facility in Navsari Gujarat — Commercial tipper trailer fabrication plant"
+                title="BlueRock Tippers Manufacturing Facility - Navsari"
                 fill
                 className="object-cover object-center"
                 sizes="(max-width: 767px) 100vw, (max-width: 1023px) 100vw, 50vw"

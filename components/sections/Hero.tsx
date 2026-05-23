@@ -83,8 +83,8 @@ export default function Hero() {
           <Image
             // src="/products/bharatbenz-tipper.jpg"
             src="/campaign_images/brand_atmosphere_dusk_1778775998774.png"
-            alt="BlueRock Tippers - Premium Tipper Body Manufacturer, BlueRock"
-            title="BlueRock Tippers"
+            alt="BlueRock tippers trailers — Leading commercial vehicle body fabricator India. Premium tipper and trailer solutions for transport operators."
+            title="BlueRock Tippers - Commercial Vehicle Body Manufacturer"
             fill
             priority
             className="object-cover"
