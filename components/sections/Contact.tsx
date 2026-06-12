@@ -3,6 +3,15 @@
 import { type FormEvent, useState } from 'react';
 import { CONTACT_BODY, CONTACT_DETAILS, SELECT_OPTIONS } from '@/lib/constants';
 
+interface FormErrors {
+  fullName?: string;
+  company?: string;
+  email?: string;
+  phone?: string;
+  product?: string;
+  requirements?: string;
+}
+
 function ContactIcon({ type }: { type: string }) {
   if (type === 'location') {
     return (
@@ -48,35 +57,117 @@ const inputStyle = {
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Validation functions
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const validateForm = (formData: FormData): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    const fullName = (formData.get('fullName') as string)?.trim();
+    if (!fullName) {
+      newErrors.fullName = 'Full name is required';
+    } else if (fullName.length < 2) {
+      newErrors.fullName = 'Full name must be at least 2 characters';
+    }
+
+    const email = (formData.get('email') as string)?.trim();
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    const phone = (formData.get('phone') as string)?.trim();
+    if (!phone) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!validatePhone(phone)) {
+      newErrors.phone = 'Please enter a valid phone number (min 10 digits)';
+    }
+
+    const company = (formData.get('company') as string)?.trim();
+    if (!company) {
+      newErrors.company = 'Company name is required';
+    }
+
+    const product = (formData.get('product') as string)?.trim();
+    if (!product) {
+      newErrors.product = 'Please select a product';
+    }
+
+    const requirements = (formData.get('requirements') as string)?.trim();
+    if (!requirements) {
+      newErrors.requirements = 'Please tell us your requirements';
+    } else if (requirements.length < 10) {
+      newErrors.requirements = 'Requirements must be at least 10 characters';
+    }
+
+    return newErrors;
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitting(true);
-    
+    setErrors({});
+    setSubmitError(null);
+
     const form = e.currentTarget;
     const formData = new FormData(form);
-    
-    // Convert FormData to URLSearchParams so Google Apps Script can parse it into e.parameter
-    const urlEncodedData = new URLSearchParams(formData as any);
-    
-    // Read the script URL from the .env file
-    const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL!;
-    
+
+    // Client-side validation
+    const formErrors = validateForm(formData);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      // Scroll to first error
+      form.querySelector('[aria-invalid="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    setSubmitting(true);
+
     try {
-      if (!scriptUrl) {
-        throw new Error('Script URL is not defined in environment variables');
+      const response = await fetch('/api/send-enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: formData.get('fullName'),
+          company: formData.get('company'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          product: formData.get('product'),
+          requirements: formData.get('requirements'),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Server returned validation errors → map back to fields
+        if (response.status === 422 && data.fields) {
+          setErrors(data.fields);
+          return;
+        }
+        throw new Error(data.error || 'Failed to send enquiry');
       }
 
-      await fetch(scriptUrl, {
-        method: 'POST',
-        body: urlEncodedData,
-        mode: 'no-cors', // Required to bypass CORS restrictions for Google Script webhooks
-      });
       setSubmitted(true);
+      form.reset();
     } catch (error) {
       console.error('Error submitting form', error);
-      // Fallback: still show submitted so user isn't stuck
-      setSubmitted(true);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to send enquiry. Please try again or contact us directly at info@bluerocktippers.com'
+      );
     } finally {
       setSubmitting(false);
     }
@@ -192,61 +283,163 @@ export default function Contact() {
                   {/* form-group: flex col; gap: 10px */}
                   <div className="flex flex-col" style={{ gap: '10px' }}>
                     <label htmlFor="full-name" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
-                      Full Name
+                      Full Name <span className="text-rock-sky">*</span>
                     </label>
-                    <input id="full-name" type="text" name="fullName" required placeholder="Rajesh Kumar" aria-required="true" className={inputClass} style={inputStyle} />
+                    <input 
+                      id="full-name" 
+                      type="text" 
+                      name="fullName" 
+                      required 
+                      placeholder="Rajesh Kumar" 
+                      aria-required="true"
+                      aria-invalid={!!errors.fullName}
+                      className={inputClass}
+                      style={{
+                        ...inputStyle,
+                        borderColor: errors.fullName ? '#ef4444' : 'rgba(200,169,110,0.15)',
+                        backgroundColor: errors.fullName ? 'rgba(239,68,68,0.05)' : 'rgba(255,255,255,0.04)',
+                      }}
+                    />
+                    {errors.fullName && <span className="text-red-400 text-xs">{errors.fullName}</span>}
                   </div>
                   <div className="flex flex-col" style={{ gap: '10px' }}>
                     <label htmlFor="company" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
-                      Company
+                      Company <span className="text-rock-sky">*</span>
                     </label>
-                    <input id="company" type="text" name="company" placeholder="Transport Co." className={inputClass} style={inputStyle} />
+                    <input 
+                      id="company" 
+                      type="text" 
+                      name="company"
+                      required
+                      aria-required="true"
+                      aria-invalid={!!errors.company}
+                      placeholder="Transport Co." 
+                      className={inputClass}
+                      style={{
+                        ...inputStyle,
+                        borderColor: errors.company ? '#ef4444' : 'rgba(200,169,110,0.15)',
+                        backgroundColor: errors.company ? 'rgba(239,68,68,0.05)' : 'rgba(255,255,255,0.04)',
+                      }}
+                    />
+                    {errors.company && <span className="text-red-400 text-xs">{errors.company}</span>}
                   </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <div className="flex flex-col" style={{ gap: '10px' }}>
                     <label htmlFor="phone" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
-                      Phone
+                      Phone <span className="text-rock-sky">*</span>
                     </label>
-                    <input id="phone" type="tel" name="phone" placeholder="+91 00000 00000" className={inputClass} style={inputStyle} />
+                    <input 
+                      id="phone" 
+                      type="tel" 
+                      name="phone"
+                      required
+                      aria-required="true"
+                      placeholder="+91 00000 00000"
+                      aria-invalid={!!errors.phone}
+                      className={inputClass}
+                      style={{
+                        ...inputStyle,
+                        borderColor: errors.phone ? '#ef4444' : 'rgba(200,169,110,0.15)',
+                        backgroundColor: errors.phone ? 'rgba(239,68,68,0.05)' : 'rgba(255,255,255,0.04)',
+                      }}
+                    />
+                    {errors.phone && <span className="text-red-400 text-xs">{errors.phone}</span>}
                   </div>
                   <div className="flex flex-col" style={{ gap: '10px' }}>
                     <label htmlFor="email" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
-                      Email
+                      Email <span className="text-rock-sky">*</span>
                     </label>
-                    <input id="email" type="email" name="email" placeholder="you@company.com" className={inputClass} style={inputStyle} />
+                    <input 
+                      id="email" 
+                      type="email" 
+                      name="email" 
+                      placeholder="you@company.com"
+                      required
+                      aria-required="true"
+                      aria-invalid={!!errors.email}
+                      className={`${inputClass} ${errors.email ? 'border-red-500 bg-red-500/5' : ''}`}
+                      style={{
+                        ...inputStyle,
+                        borderColor: errors.email ? '#ef4444' : 'rgba(200,169,110,0.15)',
+                        backgroundColor: errors.email ? 'rgba(239,68,68,0.05)' : 'rgba(255,255,255,0.04)',
+                      }}
+                    />
+                    {errors.email && <span className="text-red-400 text-xs">{errors.email}</span>}
                   </div>
                 </div>
 
                 {/* Product select */}
                 <div className="flex flex-col" style={{ gap: '10px' }}>
                   <label htmlFor="product" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
-                    Product Interest
+                    Product Interest <span className="text-rock-sky">*</span>
                   </label>
-                  <select id="product" name="product" className={`form-select ${inputClass}`} style={inputStyle} aria-label="Select a product category">
+                  <select 
+                    id="product" 
+                    name="product" 
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.product}
+                    className={`${inputClass} ${errors.product ? 'border-red-500 bg-red-500/5' : ''}`}
+                    style={{
+                      ...inputStyle,
+                      borderColor: errors.product ? '#ef4444' : 'rgba(200,169,110,0.15)',
+                      backgroundColor: errors.product ? 'rgba(239,68,68,0.05)' : 'rgba(255,255,255,0.04)',
+                    }}
+                    aria-label="Select a product category"
+                  >
                     <option value="">Select a product category</option>
                     {SELECT_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
                     ))}
                   </select>
+                  {errors.product && <span className="text-red-400 text-xs">{errors.product}</span>}
                 </div>
 
                 {/* Textarea */}
                 <div className="flex flex-col" style={{ gap: '10px' }}>
                   <label htmlFor="requirements" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
-                    Vehicle Platform &amp; Requirements
+                    Vehicle Platform &amp; Requirements <span className="text-rock-sky">*</span>
                   </label>
                   <textarea
                     id="requirements"
                     name="requirements"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.requirements}
                     placeholder="Tell us your vehicle make/model, payload requirement, application (mining, construction, logistics, etc.)…"
-                    className={inputClass}
-                    style={{ ...inputStyle, resize: 'vertical', minHeight: '120px' }}
+                    className={`${inputClass} ${errors.requirements ? 'border-red-500 bg-red-500/5' : ''}`}
+                    style={{
+                      ...inputStyle,
+                      resize: 'vertical',
+                      minHeight: '120px',
+                      borderColor: errors.requirements ? '#ef4444' : 'rgba(200,169,110,0.15)',
+                      backgroundColor: errors.requirements ? 'rgba(239,68,68,0.05)' : 'rgba(255,255,255,0.04)',
+                    }}
                   />
+                  {errors.requirements && <span className="text-red-400 text-xs">{errors.requirements}</span>}
                 </div>
 
-                {/* btn-submit: padding: 20px 48px */}
+                {submitError && (
+                  <div
+                    role="alert"
+                    className="flex items-start gap-3 p-4 text-sm"
+                    style={{
+                      background: 'rgba(239,68,68,0.08)',
+                      border: '1px solid rgba(239,68,68,0.3)',
+                      color: '#f87171',
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0 mt-0.5" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <span>{submitError}</span>
+                  </div>
+                )}
+
                 <button
                   type="submit"
                   disabled={submitting}
