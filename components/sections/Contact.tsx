@@ -166,7 +166,7 @@ export default function Contact() {
       setSubmitError(
         error instanceof Error
           ? error.message
-          : 'Failed to send enquiry. Please try again or contact us directly at info@bluerocktippers.com'
+          : 'Failed to send enquiry. Please try again or contact us directly at excellence@bluerocktippers.com'
       );
     } finally {
       setSubmitting(false);
@@ -285,12 +285,12 @@ export default function Contact() {
                     <label htmlFor="full-name" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
                       Full Name <span className="text-rock-sky">*</span>
                     </label>
-                    <input 
-                      id="full-name" 
-                      type="text" 
-                      name="fullName" 
-                      required 
-                      placeholder="Rajesh Kumar" 
+                    <input
+                      id="full-name"
+                      type="text"
+                      name="fullName"
+                      required
+                      placeholder="Rajesh Kumar"
                       aria-required="true"
                       aria-invalid={!!errors.fullName}
                       className={inputClass}
@@ -306,14 +306,14 @@ export default function Contact() {
                     <label htmlFor="company" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
                       Company <span className="text-rock-sky">*</span>
                     </label>
-                    <input 
-                      id="company" 
-                      type="text" 
+                    <input
+                      id="company"
+                      type="text"
                       name="company"
                       required
                       aria-required="true"
                       aria-invalid={!!errors.company}
-                      placeholder="Transport Co." 
+                      placeholder="Transport Co."
                       className={inputClass}
                       style={{
                         ...inputStyle,
@@ -330,9 +330,9 @@ export default function Contact() {
                     <label htmlFor="phone" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
                       Phone <span className="text-rock-sky">*</span>
                     </label>
-                    <input 
-                      id="phone" 
-                      type="tel" 
+                    <input
+                      id="phone"
+                      type="tel"
                       name="phone"
                       required
                       aria-required="true"
@@ -351,10 +351,10 @@ export default function Contact() {
                     <label htmlFor="email" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
                       Email <span className="text-rock-sky">*</span>
                     </label>
-                    <input 
-                      id="email" 
-                      type="email" 
-                      name="email" 
+                    <input
+                      id="email"
+                      type="email"
+                      name="email"
                       placeholder="you@company.com"
                       required
                       aria-required="true"
@@ -375,9 +375,9 @@ export default function Contact() {
                   <label htmlFor="product" className="font-body uppercase text-white/45" style={{ fontSize: '10px', letterSpacing: '3px' }}>
                     Product Interest <span className="text-rock-sky">*</span>
                   </label>
-                  <select 
-                    id="product" 
-                    name="product" 
+                  <select
+                    id="product"
+                    name="product"
                     required
                     aria-required="true"
                     aria-invalid={!!errors.product}
@@ -391,7 +391,7 @@ export default function Contact() {
                   >
                     <option value="">Select a product category</option>
                     {SELECT_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      <option key={opt.value} value={opt.value} style={{ backgroundColor: '#0a0a0a' }}>{opt.label}</option>
                     ))}
                   </select>
                   {errors.product && <span className="text-red-400 text-xs">{errors.product}</span>}

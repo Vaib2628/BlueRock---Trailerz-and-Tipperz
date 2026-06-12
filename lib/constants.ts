@@ -222,7 +222,7 @@ export const CONTACT_DETAILS: ContactDetail[] = [
     iconType: 'location',
   },
   { label: 'Phone', value: '+91 77963 71155', iconType: 'phone' },
-  { label: 'Email', value: 'info@bluerocktippers.com', iconType: 'email' },
+  { label: 'Email', value: 'excellence@bluerocktippers.com', iconType: 'email' },
   { label: 'Response Time', value: 'Within 24 hours guaranteed', iconType: 'clock' },
 ];
 

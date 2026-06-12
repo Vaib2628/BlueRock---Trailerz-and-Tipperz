@@ -91,8 +91,11 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-snippet': -1 },
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 };
 
@@ -143,7 +146,7 @@ const jsonLd = {
       description: SITE_DESCRIPTION,
       url: SITE_URL,
       telephone: '+91-93726-49121',
-      email: 'info@bluerocktippers.com',
+      email: 'excellence@bluerocktippers.com',
       foundingDate: '1984',
       address: {
         '@type': 'PostalAddress',
@@ -172,6 +175,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${bebasNeue.variable} ${cormorantGaramond.variable} ${dmSans.variable}`}
     >
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -161,7 +161,7 @@ function buildOwnerEmail(data: {
           <td style="background:rgba(0,0,0,0.3);padding:24px 48px;text-align:center;border-top:1px solid rgba(255,255,255,0.06);">
             <p style="margin:0;color:rgba(255,255,255,0.3);font-size:11px;line-height:1.6;">
               BlueRock Tippers &amp; Trailerz · Block no. 460/1, Alipore, Navsari – 396409, Gujarat<br>
-              +91 77963 71155 · info@bluerocktippers.com
+              +91 77963 71155 · excellence@bluerocktippers.com
             </p>
           </td>
         </tr>
@@ -305,7 +305,7 @@ function buildCustomerEmail(data: {
               <p style="margin:0 0 4px;color:rgba(255,255,255,0.4);font-size:10px;letter-spacing:3px;text-transform:uppercase;">Need urgent help?</p>
               <p style="margin:8px 0 0;color:rgba(255,255,255,0.7);font-size:13px;line-height:1.8;">
                 📞 <a href="tel:+917796371155" style="color:#7aadde;text-decoration:none;">+91 77963 71155</a><br>
-                ✉️ <a href="mailto:info@bluerocktippers.com" style="color:#7aadde;text-decoration:none;">info@bluerocktippers.com</a>
+                ✉️ <a href="mailto:excellence@bluerocktippers.com" style="color:#7aadde;text-decoration:none;">excellence@bluerocktippers.com</a>
               </p>
             </div>
           </td>
@@ -422,11 +422,19 @@ export async function POST(req: NextRequest) {
       errors.push(`Email not sent – missing configuration: ${missingVars}`);
     } else {
       try {
+        const smtpPort = parseInt(process.env.SMTP_PORT || '465');
         const transporter = nodemailer.createTransport({
-          host: process.env.SMTP_HOST || 'smtp.gmail.com',
-          port: parseInt(process.env.SMTP_PORT || '587'),
-          secure: process.env.SMTP_SECURE === 'true',
+          host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
+          port: smtpPort,
+          // Port 465 = SSL (secure:true), port 587 = STARTTLS (secure:false)
+          secure: process.env.SMTP_SECURE !== undefined
+            ? process.env.SMTP_SECURE === 'true'
+            : smtpPort === 465,
           auth: { user: smtpUser, pass: smtpPass },
+          tls: {
+            // GoDaddy uses its own certificate chain – disable strict checks
+            rejectUnauthorized: false,
+          },
         });
 
         await transporter.verify();
